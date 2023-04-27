@@ -98,8 +98,22 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        // TODO - implement this method
-        return null;
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        ArrayList<String> addedJobIds = new ArrayList<>(); // keep track of job IDs to avoid duplicates
+
+        for(HashMap<String, String> job : allJobs) {
+            for(String field : job.keySet()) {
+                String fieldValue = job.get(field);
+                if (fieldValue.contains(value) && !addedJobIds.contains(job.get("id"))) {
+                    jobs.add(job);
+                    addedJobIds.add(job.get("id"));
+                    break; // break loop if job has already been added
+                }
+            }
+        }
+
+        return jobs;
+
     }
 
     /**

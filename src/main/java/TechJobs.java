@@ -6,13 +6,11 @@ import java.util.Scanner;
 /**
  * Created by LaunchCode
  */
-// this is a test
-//   to see if my project will commit
 public class TechJobs {
 
     static Scanner in = new Scanner(System.in);
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
 
         // Initialize our field map with key/name pairs
         HashMap<String, String> columnChoices = new HashMap<>();
@@ -31,7 +29,6 @@ public class TechJobs {
 
         // Allow the user to search until they manually quit
         while (true) {
-
             String actionChoice = getUserSelection("View jobs by (type 'x' to quit):", actionChoices);
 
             if (actionChoice == null) {
@@ -53,7 +50,6 @@ public class TechJobs {
                         System.out.println(item);
                     }
                 }
-
             } else { // choice is "search"
 
                 // How does the user want to search (e.g. by skill or employer)
@@ -114,14 +110,23 @@ public class TechJobs {
                 validChoice = true;
             }
 
-        } while(!validChoice);
-
+        } while (!validChoice);
         return choiceKeys[choiceIdx];
     }
 
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
-
-        System.out.println("printJobs is not implemented yet");
+        if (someJobs.size() == 0) {
+            System.out.print("No Results");
+        } else {
+            for (HashMap<String, String> job : someJobs) {
+                System.out.println("*****");
+                for (String key : job.keySet()) {
+                    System.out.println(key + ": " + job.get(key));
+                }
+                System.out.println("*****\n");
+            }
+        }
     }
 }
+
