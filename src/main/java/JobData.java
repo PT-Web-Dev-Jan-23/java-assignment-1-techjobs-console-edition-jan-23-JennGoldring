@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 /**
  * Created by LaunchCode
  */
@@ -102,18 +102,19 @@ public class JobData {
         ArrayList<String> addedJobIds = new ArrayList<>(); // keep track of job IDs to avoid duplicates
 
         for(HashMap<String, String> job : allJobs) {
-            for(String field : job.keySet()) {
-                String fieldValue = job.get(field);
-                if (fieldValue.contains(value) && !addedJobIds.contains(job.get("id"))) {
+            if (addedJobIds.contains(job.get("id"))) {
+                continue; //skip if aleady added
+            }
+            for(Map.Entry<String, String> entry : job.entrySet()) {
+                String fieldValue = entry.getValue();
+                if (fieldValue.contains(value)) {
                     jobs.add(job);
                     addedJobIds.add(job.get("id"));
                     break; // break loop if job has already been added
                 }
             }
         }
-
         return jobs;
-
     }
 
     /**
