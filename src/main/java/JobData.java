@@ -96,42 +96,15 @@ public class JobData {
         loadData();
 
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
-        HashSet<String> addedJobIds = new HashSet<>(); // added to keep from using one entry twice (when I add this I no longer
         for (HashMap<String, String> job : JobData.findAll()) {
-            boolean matchFound = false;
             for (String key : job.keySet()) {
                 if (job.get(key).toUpperCase().contains(value.toUpperCase())) {
-                    matchFound = true;
-                    break; //exit the loop once a match is found for this job
+                    jobs.add(job);
                 }
             }
-            if (matchFound && !addedJobIds.contains(job.get("id"))) {
-                jobs.add(job);
-                addedJobIds.add(job.get("id"));
-            }
         }
-            return jobs;
+        return jobs;
     }
-
-
-//  Trying to test why my findbyvalue isn't working.
-//    public static void testFindByValue() {
-//        System.out.println("Testing findByValue()...");
-//
-//        ArrayList<HashMap<String, String>> jobs = findByValue("Java");
-//        System.out.println(jobs.size() + " jobs found:");
-//        for (HashMap<String, String> job : jobs) {
-//            System.out.println(job.get("name") + " at " + job.get("employer"));
-//        }
-//
-//        jobs = findByValue("Ruby");
-//        System.out.println(jobs.size() + " jobs found:");
-//        for (HashMap<String, String> job : jobs) {
-//            System.out.println(job.get("name") + " at " + job.get("employer"));
-//        }
-//
-//        System.out.println("Testing complete.");
-//    }
 
 
 
