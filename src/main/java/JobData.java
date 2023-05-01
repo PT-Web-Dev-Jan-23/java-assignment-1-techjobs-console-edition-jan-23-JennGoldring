@@ -5,11 +5,8 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 /**
  * Created by LaunchCode
  */
@@ -60,12 +57,12 @@ public class JobData {
     /**
      * Returns results of search the jobs data by key/value, using
      * inclusion of the search term.
-     *
+     * <p>
      * For example, searching for employer "Enterprise" will include results
      * with "Enterprise Holdings, Inc".
      *
-     * @param column   Column that should be searched.
-     * @param value Value of teh field to search for
+     * @param column Column that should be searched.
+     * @param value  Value of teh field to search for
      * @return List of all jobs matching the criteria
      */
     public static ArrayList<HashMap<String, String>> findByColumnAndValue(String column, String value) {
@@ -91,7 +88,7 @@ public class JobData {
      * Search all columns for the given term
      *
      * @param value The search term to look for
-     * @return      List of all jobs with at least one field containing the value
+     * @return List of all jobs with at least one field containing the value
      */
     public static ArrayList<HashMap<String, String>> findByValue(String value) {
 
@@ -99,23 +96,44 @@ public class JobData {
         loadData();
 
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
-        ArrayList<String> addedJobIds = new ArrayList<>(); // keep track of job IDs to avoid duplicates
-
-        for(HashMap<String, String> job : allJobs) {
-            if (addedJobIds.contains(job.get("id"))) {
-                continue; //skip if aleady added
-            }
-            for(Map.Entry<String, String> entry : job.entrySet()) {
-                String fieldValue = entry.getValue();
-                if (fieldValue.contains(value)) {
-                    jobs.add(job);
-                    addedJobIds.add(job.get("id"));
-                    break; // break loop if job has already been added
+        HashSet<String> addedJobIds = new HashSet<>(); // added to keep from using one entry twice (when I add this I no longer
+        for (HashMap<String, String> job : JobData.findAll()) {
+            boolean matchFound = false;
+            for (String key : job.keySet()) {
+                if (job.get(key).toUpperCase().contains(value.toUpperCase())) {
+                    matchFound = true;
+                    break; //exit the loop once a match is found for this job
                 }
             }
+            if (matchFound && !addedJobIds.contains(job.get("id"))) {
+                jobs.add(job);
+                addedJobIds.add(job.get("id"));
+            }
         }
-        return jobs;
+            return jobs;
     }
+
+
+//  Trying to test why my findbyvalue isn't working.
+//    public static void testFindByValue() {
+//        System.out.println("Testing findByValue()...");
+//
+//        ArrayList<HashMap<String, String>> jobs = findByValue("Java");
+//        System.out.println(jobs.size() + " jobs found:");
+//        for (HashMap<String, String> job : jobs) {
+//            System.out.println(job.get("name") + " at " + job.get("employer"));
+//        }
+//
+//        jobs = findByValue("Ruby");
+//        System.out.println(jobs.size() + " jobs found:");
+//        for (HashMap<String, String> job : jobs) {
+//            System.out.println(job.get("name") + " at " + job.get("employer"));
+//        }
+//
+//        System.out.println("Testing complete.");
+//    }
+
+
 
     /**
      * Read in data from a CSV file and store it in a list

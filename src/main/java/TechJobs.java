@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -26,6 +25,7 @@ public class TechJobs {
         actionChoices.put("list", "List");
 
         System.out.println("Welcome to LaunchCode's TechJobs App!");
+//        JobData.testFindByValue(); // trying to figure out why my stupid findByValue is not looping through the data
 
         // Allow the user to search until they manually quit
         while (true) {
@@ -56,17 +56,34 @@ public class TechJobs {
                 String searchField = getUserSelection("Search by:", columnChoices);
 
                 // What is their search term?
-                System.out.println("\nSearch term:\n");
+                System.out.println("\nSearch term:");
                 String searchTerm = in.nextLine();
 
                 if (searchField.equals("all")) {
-                    printJobs(JobData.findByValue(searchTerm));
+                    printJobs(JobData.findByValue(searchTerm.toUpperCase()));
                 } else {
-                    printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
+                    printJobs(JobData.findByColumnAndValue(searchField, searchTerm.toUpperCase()));
                 }
             }
         }
     }
+
+
+    //Print List of Jobs
+    public static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
+        if (someJobs.size() == 0) {
+            System.out.print("No Results");
+        } else {
+            for (HashMap<String, String> job : someJobs) {
+                System.out.println("*****");
+                for (String key : job.keySet()) {
+                    System.out.println(key + ": " + job.get(key));
+                }
+                System.out.println("*****\n");
+            }
+        }
+    }
+
 
     // ﻿Returns the key of the selected item from the choices Dictionary
     private static String getUserSelection(String menuHeader, HashMap<String, String> choices) {
@@ -113,23 +130,7 @@ public class TechJobs {
         } while (!validChoice);
         return choiceKeys[choiceIdx];
     }
-
-    private static void findByValue(String value) {
-
-    }
-    // Print a list of jobs
-    private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
-        if (someJobs.size() == 0) {
-            System.out.print("No Results");
-        } else {
-            for (HashMap<String, String> job : someJobs) {
-                System.out.println("*****");
-                for (String key : job.keySet()) {
-                    System.out.println(key + ": " + job.get(key));
-                }
-                System.out.println("*****\n");
-            }
-        }
-    }
 }
+
+
 
