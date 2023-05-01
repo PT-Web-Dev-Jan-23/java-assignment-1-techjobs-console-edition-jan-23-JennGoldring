@@ -76,7 +76,7 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toUpperCase().contains(value.toUpperCase())) { // this is what I changed
                 jobs.add(row);
             }
         }
@@ -91,7 +91,6 @@ public class JobData {
      * @return List of all jobs with at least one field containing the value
      */
     public static ArrayList<HashMap<String, String>> findByValue(String value) {
-
         // load data, if not already loaded
         loadData();
 
@@ -105,8 +104,6 @@ public class JobData {
         }
         return jobs;
     }
-
-
 
     /**
      * Read in data from a CSV file and store it in a list
